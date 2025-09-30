@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Notes</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 0 20px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #34495e;
+      margin-bottom: 30px;
+    }
+
+    .top-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      color: white;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-add {
+      background-color: #2ecc71;
+    }
+
+    .btn-add:hover {
+      background-color: #27ae60;
+    }
+
+    .btn-logout {
+      background-color: #e74c3c;
+    }
+
+    .btn-logout:hover {
+      background-color: #c0392b;
+    }
+
+    .note-card {
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 20px 25px;
+      margin-bottom: 20px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    }
+
+    .note-title {
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+
+    .note-content {
+      font-size: 16px;
+      color: #555;
+      margin-bottom: 15px;
+    }
+
+    .note-actions a {
+      text-decoration: none;
+      margin-right: 10px;
+      padding: 6px 15px;
+      border-radius: 6px;
+      color: white;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+    }
+
+    .note-actions .edit {
+      background-color: #3498db;
+    }
+
+    .note-actions .edit:hover {
+      background-color: #2980b9;
+    }
+
+    .note-actions .delete {
+      background-color: #e74c3c;
+    }
+
+    .note-actions .delete:hover {
+      background-color: #c0392b;
+    }
+
+    .no-notes {
+      text-align: center;
+      color: #777;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Your Notes</h2>
+
+    <div class="top-buttons">
+      <a href="{% url 'note_create' %}" class="btn btn-add">Add Note</a>
+     <form method="post" action="{% url 'logout' %}" style="display:inline;">
+        {% csrf_token %}
+  <button type="submit" class="btn btn-logout">Logout</button>
+</form>
+
+    </div>
+
+    {% if notes %}
+      {% for note in notes %}
+        <div class="note-card">
+          <div class="note-title">{{ note.title }}</div>
+          <div class="note-content">{{ note.content }}</div>
+          <div class="note-actions">
+            <a href="{% url 'note_update' note.id %}" class="edit">Edit</a>
+            <a href="{% url 'note_delete' note.id %}" class="delete">Delete</a>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div class="no-notes">You have no notes yet. Click "Add Note" to create one!</div>
+    {% endif %}
+  </div>
+</body>
+</html>
+
