@@ -76,6 +76,18 @@
       margin-bottom: 15px;
     }
 
+    .note-image {
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .note-image img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
     .note-actions a {
       text-decoration: none;
       margin-right: 10px;
@@ -115,11 +127,10 @@
 
     <div class="top-buttons">
       <a href="{% url 'note_create' %}" class="btn btn-add">Add Note</a>
-     <form method="post" action="{% url 'logout' %}" style="display:inline;">
+      <form method="post" action="{% url 'logout' %}" style="display:inline;">
         {% csrf_token %}
-  <button type="submit" class="btn btn-logout">Logout</button>
-</form>
-
+        <button type="submit" class="btn btn-logout">Logout</button>
+      </form>
     </div>
 
     {% if notes %}
@@ -127,6 +138,13 @@
         <div class="note-card">
           <div class="note-title">{{ note.title }}</div>
           <div class="note-content">{{ note.content }}</div>
+
+          {% if note.image %}
+            <div class="note-image">
+              <img src="{{ note.image.url }}" alt="Note Image">
+            </div>
+          {% endif %}
+
           <div class="note-actions">
             <a href="{% url 'note_update' note.id %}" class="edit">Edit</a>
             <a href="{% url 'note_delete' note.id %}" class="delete">Delete</a>
@@ -139,4 +157,3 @@
   </div>
 </body>
 </html>
-

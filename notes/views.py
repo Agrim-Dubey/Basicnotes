@@ -23,7 +23,8 @@ def note_create(request):
     if request.method == 'POST':
         title = request.POST['title']
         content = request.POST['content']
-        Note.objects.create(title=title, content=content, user=request.user)
+        image = request.FILES.get('image')  # ✅ get uploaded image
+        Note.objects.create(title=title, content=content, user=request.user, image=image)  # ✅ save image
         return redirect('notes_list')
     return render(request, 'notes/note_form.html')
 
@@ -33,6 +34,8 @@ def note_update(request, pk):
     if request.method == 'POST':
         note.title = request.POST['title']
         note.content = request.POST['content']
+        if 'image' in request.FILES:
+            note.image = request.FILES['image']
         note.save()
         return redirect('notes_list')
     return render(request, 'notes/note_form.html', {'note': note})
