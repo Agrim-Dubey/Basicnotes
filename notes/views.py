@@ -23,8 +23,8 @@ def note_create(request):
     if request.method == 'POST':
         title = request.POST['title']
         content = request.POST['content']
-        image = request.FILES.get('image')  # ✅ get uploaded image
-        Note.objects.create(title=title, content=content, user=request.user, image=image)  # ✅ save image
+        image = request.FILES.get('image') 
+        Note.objects.create(title=title, content=content, user=request.user, image=image)  
         return redirect('notes_list')
     return render(request, 'notes/note_form.html')
 

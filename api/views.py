@@ -1,11 +1,8 @@
-from django.shortcuts import render
 from rest_framework import generics, permissions
-from rest_framework.decorators import api_view, permission_classes
-from rest_framework.response import Response
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.contrib.auth.models import User
 from .serializers import UserSerializer, NoteSerializer
 from notes.models import Note
-
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
@@ -14,17 +11,19 @@ class RegisterView(generics.CreateAPIView):
 class NoteListCreateView(generics.ListCreateAPIView):
     serializer_class = NoteSerializer
     permission_classes = [permissions.IsAuthenticated]
-
+    authentication_classes = [JWTAuthentication]   
     def get_queryset(self):
-        return Note.objects.filter(author=self.request.user)
+        return Note.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        serializer.save(user=self.request.user)
 
 
 class NoteDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Note.objects.all()
     serializer_class = NoteSerializer
     permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [JWTAuthentication]  
 
     def get_queryset(self):
-        return Note.objects.filter(author=self.request.user)
+        return Note.objects.filter(user=self.request.user)
