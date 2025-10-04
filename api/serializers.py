@@ -8,14 +8,15 @@ class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(
         validators=[RegexValidator(
             regex=r'^[A-Za-z0-9\s]{5,20}$',
-            message="Only letters, numbers, and spaces allowed in username."
-        )]
+             message="Username must be 5–20 characters and can include letters, numbers, and spaces"
+        )],
+        trim_whitespace=True
     )
     password = serializers.CharField(
         write_only=True,
         validators=[RegexValidator(
-            regex=r'^[A-Za-z0-9@#$%^&+=]{5,20}$',
-            message="Password may contain letters, numbers, and @#$%^&+="
+            regex=r'^[A-Za-z0-9@#$^&+=]{5,20}$',
+            message="Password must be 5–20 characters and can include letters, numbers, and @#$^&+="
         )]
     )
 
